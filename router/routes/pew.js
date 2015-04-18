@@ -13,7 +13,7 @@ router.post('/', function(request, response) {
   var name = request.body.user_name;
   var input = request.body.text;
   var token = request.body.token;
-  var message = "<!group>: PEW ";
+  var message = ["<!group>: PEW"];
 
   if (!token || token !== PEW_SLASH_TOKEN) {
     response.status(403).send('Unauthorized');
@@ -21,15 +21,15 @@ router.post('/', function(request, response) {
   }
 
   if (!input || input.length === 0) {
-    message = message + "now";
+    message.push("now");
   } else {
-    message = message + input + " minutes"
+    message.push("in", input, "minutes");
   }
 
   slack.send({
     icon_emoji: ':bomb:',
     username: "PEW ALERT via " + name,
-    text: message
+    text: message.join(' ')
   });
 });
 
