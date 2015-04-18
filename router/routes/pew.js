@@ -11,27 +11,26 @@ var slack = require('slack-notify')(PEW_SLACK_WEBHOOK_URL);
 // POST /pew
 router.post('/', function(request, response) {
   var name = request.body.user_name;
-  var text = request.body.text;
+  var input = request.body.text;
   var token = request.body.token;
+  var message = "<!group>: PEW ";
 
   if (!token || token !== PEW_SLASH_TOKEN) {
     response.status(403).send('Unauthorized');
     return;
   }
 
-  if (!text || text.length === 0) {
-    slack.send({
-      icon_emoji: ':bomb:',
-      username: "PEW ALERT via " + name,
-      text: "<!group>: PEW now"
-    });
+  if (!input || input.length === 0) {
+    message = message + "now";
   } else {
-    slack.send({
-      icon_emoji: ':bomb:',
-      username: "PEW ALERT via " + name,
-      text: "<!group>: PEW in " + text + " minutes"
-    });
-  };
+    message = message + input + " minutes"
+  }
+
+  slack.send({
+    icon_emoji: ':bomb:',
+    username: "PEW ALERT via " + name,
+    text: message
+  });
 });
 
 module.exports = router;
