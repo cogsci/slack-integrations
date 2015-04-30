@@ -8,6 +8,10 @@ var POMODORO_SLACK_WEBHOOK_URL = process.env['POMODORO_SLACK_WEBHOOK_URL'];
 var POMODORO_SLASH_TOKEN = process.env['POMODORO_SLASH_TOKEN'];
 var slack = require('slack-notify')(POMODORO_SLACK_WEBHOOK_URL);
 
+if (!POMODORO_SLASH_TOKEN || !POMODORO_SLACK_WEBHOOK_URL) {
+  throw new Error('Must define POMODORO_SLASH_TOKEN and POMODORO_SLACK_WEBHOOK_URL');
+}
+
 // POST /pomodoro
 router.post('/', function(request, response) {
   var name = request.body.user_name;
@@ -26,10 +30,13 @@ router.post('/', function(request, response) {
   }
 
   if (!input || input.length === 0) {
-    "Please input minutes to work then minutes to rest. Eg, '/pomodoro 25 5'";
+    slack.send({
+      username: "Pomodoro Ping",
+      text: "Please input minutes to work then minutes to rest. Eg, '/pomodoro 25 5'"
+    });
   } else {
     // Resets message to original starting point.
-    resetMessage() {
+    function resetMessage() {
       message.length = 1;
     };
     // Puts work and break time inputs into array.
@@ -37,11 +44,12 @@ router.post('/', function(request, response) {
     // Stores work and break time as ints
     workTimeInMinutes = parseFloat(times[0]);
     breakTimeInMinutes = parseFloat(times[1]);
-    workTimeInMilliseconds = workTimeMinutes * 60000;
-    breakTimeInMilliseconds = breakTimeMinutes * 60000;
+    workTimeInMilliseconds = workTimeInMinutes * 60000;
+    breakTimeInMilliseconds = breakTimeInMinutes * 60000;
+
     // Forms acknowledgement message.
-    message.push("get to work. Break starts in", workTimeMinutes, "minutes.")
-    
+    message.push("get to work. Break starts in", workTimeInMinutes, "minutes.")
+
     // Sends immediate response.
     slack.send({
       username: "Pomodoro Ping",
