@@ -17,12 +17,10 @@ router.post('/', function(request, response) {
   var name = request.body.user_name;
   var input = request.body.text;
   var token = request.body.token;
-  var message = ["You should"];
   var times = [];
   var workTimeInMinutes = 0.0;
   var breakTimeInMinutes = 0.0;
   var workTimeInMilliseconds = 0.0;
-  var breakTimeInMilliseconds = 0.0;
 
   if (!token || token !== POMODORO_SLASH_TOKEN) {
     response.status(403).send('Unauthorized');
@@ -45,23 +43,18 @@ router.post('/', function(request, response) {
     workTimeInMinutes = parseFloat(times[0]);
     breakTimeInMinutes = parseFloat(times[1]);
     workTimeInMilliseconds = workTimeInMinutes * 60000;
-    breakTimeInMilliseconds = breakTimeInMinutes * 60000;
-
-    // Forms acknowledgement message.
-    message.push("get to work. Break starts in", workTimeInMinutes, "minutes.")
 
     // Sends immediate response.
     slack.send({
       username: "Pomodoro Ping",
-      text: message.join(' ')
+      text: "*Get to work.* Break starts in " + workTimeInMinutes + " minutes."
     });
     resetMessage();
 
     setTimeout(function() {
-      message.push("take a break. Work starts in", breakTimeInMinutes, "minutes.")
       slack.send({
         username: "Pomodoro Ping",
-        text: message.join(' ')
+        text: "*Take a break.* Work starts in " + breakTimeInMinutes + " minutes."
       });
       resetMessage();
     }, workTimeInMilliseconds)
