@@ -33,10 +33,6 @@ router.post('/', function(request, response) {
       text: "Please input minutes to work then minutes to rest. Eg, '/pomodoro 25 5'"
     });
   } else {
-    // Resets message to original starting point.
-    function resetMessage() {
-      message.length = 1;
-    };
     // Puts work and break time inputs into array.
     times = input.split(' ');
     // Stores work and break time as ints
@@ -49,14 +45,12 @@ router.post('/', function(request, response) {
       username: "Pomodoro Ping",
       text: "*Get to work.* Break starts in " + workTimeInMinutes + " minutes."
     });
-    resetMessage();
 
     setTimeout(function() {
       slack.send({
         username: "Pomodoro Ping",
         text: "*Take a break.* Work starts in " + breakTimeInMinutes + " minutes."
       });
-      resetMessage();
     }, workTimeInMilliseconds)
   }
 });
