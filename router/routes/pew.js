@@ -14,7 +14,7 @@ router.post('/', function(request, response) {
   var input = request.body.text;
   var token = request.body.token;
   var message = ["<!group>: PEW"];
-  var parse = [];
+  var parsed = [];
   var minutes = "";
   var game = "";
 
@@ -26,9 +26,9 @@ router.post('/', function(request, response) {
   if (!input || input.length === 0) {
     message.push("now");
   } else {
-    parse = input.split(' ');
-    minutes = parse[0];
-    game = parse[1];
+    parsed = input.split(' ');
+    minutes = parsed[0];
+    game = parsed[1];
     message.push(game, "in", minutes, "minutes");
     _.compact(message);
   }
