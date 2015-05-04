@@ -29,7 +29,8 @@ router.post('/', function(request, response) {
     parse = input.split(' ');
     minutes = parse[0];
     game = parse[1];
-    message.push(game, "in", minutes, "minutes";
+    message.push(game, "in", minutes, "minutes");
+    _.compact(message);
   }
 
   slack.send({
