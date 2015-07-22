@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var debug = require('debug')('pew');
+var _ = require('lodash');
 
 // From slack-notify incoming webhook url
 var PEW_SLACK_WEBHOOK_URL = process.env['PEW_SLACK_WEBHOOK_URL'];
