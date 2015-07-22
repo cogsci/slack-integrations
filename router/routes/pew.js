@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var debug = require('debug')('pew');
+var _ = require('lodash');
 
 // From slack-notify incoming webhook url
 var PEW_SLACK_WEBHOOK_URL = process.env['PEW_SLACK_WEBHOOK_URL'];
@@ -30,10 +31,15 @@ router.post('/', function(request, response) {
     message.push("now");
   } else {
     parsed = input.split(' ');
-    minutes = parsed[0];
-    game = parsed[1];
-    message.push(game, "in", minutes, "minutes");
-    message = _.compact(message);
+    if (parsed.length == 1) {
+      minutes = parsed[0];
+      message.push("in", "minutes");
+    } else {
+      minutes = parsed[0];
+      game = parsed[1];
+      message.push(game, "in", minutes, "minutes");
+      message = _.compact(message);
+    }
   }
 
   debug('sending', message.join(' '));
