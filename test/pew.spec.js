@@ -1,5 +1,5 @@
-process.env['PEW_SLACK_WEBHOOK_URL'] = 'http://fakeurl.com';
-var TOKEN = process.env['PEW_SLASH_TOKEN'] = 'faketoken';
+process.env.PEW_SLACK_WEBHOOK_URL = 'http://fakeurl.com';
+var TOKEN = process.env.PEW_SLASH_TOKEN = 'faketoken';
 var VALID_PARAMETERS = {
   token: TOKEN,
   user_name: 'bob',
