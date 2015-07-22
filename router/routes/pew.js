@@ -6,8 +6,8 @@ var debug = require('debug')('pew');
 var _ = require('lodash');
 
 // From slack-notify incoming webhook url
-var PEW_SLACK_WEBHOOK_URL = process.env['PEW_SLACK_WEBHOOK_URL'];
-var PEW_SLASH_TOKEN = process.env['PEW_SLASH_TOKEN'];
+var PEW_SLACK_WEBHOOK_URL = process.env.PEW_SLACK_WEBHOOK_URL;
+var PEW_SLASH_TOKEN = process.env.PEW_SLASH_TOKEN;
 var slack = router.slack = require('slack-notify')(PEW_SLACK_WEBHOOK_URL);
 
 // POST /pew
