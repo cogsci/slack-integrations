@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var app = express();
 var cool = require('cool-ascii-faces');
@@ -13,8 +15,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/', function(request, response) {
   var result = '';
   var times = process.env.TIMES || 5;
-  for (i=0; i < times; i++)
-      result += cool();
+  for (var i = 0; i < times; i++) {
+    result += cool();
+  }
   response.send(result);
 });
 
