@@ -1,4 +1,5 @@
 // For the #xdesix Slack integration
+'use strict';
 
 var express = require('express');
 var router = express.Router();
