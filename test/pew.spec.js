@@ -1,29 +1,30 @@
 process.env.PEW_SLACK_WEBHOOK_URL = 'http://fakeurl.com';
-var TOKEN = process.env.PEW_SLASH_TOKEN = 'faketoken';
-var VALID_PARAMETERS = {
+const TOKEN = (process.env.PEW_SLASH_TOKEN = 'faketoken');
+const VALID_PARAMETERS = {
   token: TOKEN,
   user_name: 'bob',
   text: ''
 };
 
-var _ = require('lodash');
-var bodyParser = require('body-parser');
-var assert = require('chai').assert;
-var sinon = require('sinon');
-var pew = require('../router/routes/pew');
-var app = require('express')();
+const _ = require('lodash');
+const bodyParser = require('body-parser');
+const assert = require('chai').assert;
+const sinon = require('sinon');
+const pew = require('../router/routes/pew');
+const app = require('express')();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(pew);
 
-var request = require('supertest')(app);
-var common = require('./common');
+const request = require('supertest')(app);
+const common = require('./common');
 
-var sendRequest = function(params, cb) {
+const sendRequest = function(params, cb) {
   params = params || {};
   cb = cb || function() {};
 
-  return request.post('/')
+  return request
+    .post('/')
     .type('form')
     .send(_.defaults(params, VALID_PARAMETERS))
     .end(cb);
@@ -41,20 +42,23 @@ describe('PEW', function() {
   common.ensureToken(request, '/');
 
   describe('valid request', function() {
-    it('should have user\'s name in username', function(done) {
+    it("should have user's name in username", function(done) {
       sendRequest({
         user_name: 'kelly'
       });
 
-      setTimeout(function() {
-        assert.ok(this.send.calledOnce);
+      setTimeout(
+        function() {
+          assert.ok(this.send.calledOnce);
 
-        var arg = this.send.args[0][0];
+          var arg = this.send.args[0][0];
 
-        assert.property(arg, 'username');
-        assert.include(arg.username, 'kelly');
-        done();
-      }.bind(this), 10);
+          assert.property(arg, 'username');
+          assert.include(arg.username, 'kelly');
+          done();
+        }.bind(this),
+        10
+      );
     });
   });
 
@@ -62,14 +66,17 @@ describe('PEW', function() {
     it('should send message "PEW now"', function(done) {
       sendRequest();
 
-      setTimeout(function() {
-        assert.ok(this.send.calledOnce);
+      setTimeout(
+        function() {
+          assert.ok(this.send.calledOnce);
 
-        var arg = this.send.args[0][0];
+          var arg = this.send.args[0][0];
 
-        assert.strictEqual(arg.text, '<!group>: PEW now');
-        done();
-      }.bind(this), 10);
+          assert.strictEqual(arg.text, '<!group>: PEW now');
+          done();
+        }.bind(this),
+        10
+      );
     });
   });
 
@@ -79,14 +86,17 @@ describe('PEW', function() {
         text: '30'
       });
 
-      setTimeout(function() {
-        assert.ok(this.send.calledOnce);
+      setTimeout(
+        function() {
+          assert.ok(this.send.calledOnce);
 
-        var arg = this.send.args[0][0];
+          var arg = this.send.args[0][0];
 
-        assert.strictEqual(arg.text, '<!group>: PEW in 30 minutes');
-        done();
-      }.bind(this), 10);
+          assert.strictEqual(arg.text, '<!group>: PEW in 30 minutes');
+          done();
+        }.bind(this),
+        10
+      );
     });
   });
 
@@ -96,14 +106,17 @@ describe('PEW', function() {
         text: '30 WT'
       });
 
-      setTimeout(function() {
-        assert.ok(this.send.calledOnce);
+      setTimeout(
+        function() {
+          assert.ok(this.send.calledOnce);
 
-        var arg = this.send.args[0][0];
+          var arg = this.send.args[0][0];
 
-        assert.strictEqual(arg.text, '<!group>: PEW WT in 30 minutes');
-        done();
-      }.bind(this), 10);
+          assert.strictEqual(arg.text, '<!group>: PEW WT in 30 minutes');
+          done();
+        }.bind(this),
+        10
+      );
     });
   });
 });
