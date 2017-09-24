@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "start:watch": "nodemon app.js",
     "test": "mocha --reporter spec --recursive ./test/*.spec.js"
   },
   "dependencies": {
@@ -22,11 +23,7 @@
     "type": "git",
     "url": "git@github.com:cogsci/slack-integrations.git"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
+  "keywords": ["node", "heroku", "express"],
   "license": "MIT",
   "devDependencies": {
     "chai": "^2.3.0",
@@ -34,6 +31,7 @@
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.7.0",
     "mocha": "^2.2.5",
+    "nodemon": "^1.12.1",
     "sinon": "^1.14.1",
     "supertest": "^1.0.1"
   }
